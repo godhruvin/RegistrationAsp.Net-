@@ -1,5 +1,10 @@
 ﻿using demoWebFormTaskMukeshShelar.BLL;
 using System;
+using System.Configuration;
+using System.IO;
+using System.Security.Cryptography;
+using System.Text;
+using System.Web;
 
 namespace demoWebFormTaskMukeshShelar
 {
@@ -41,8 +46,10 @@ namespace demoWebFormTaskMukeshShelar
                     string guid = Guid.NewGuid().ToString();
                     Session["userguid"] = guid;
                     Session["isNewUser"] = false;
-                    Console.WriteLine("session guid : " + Session["userguid"].ToString());
-                    string redirectUrl = $"WelcomePage.aspx?userId={userId}&guid={guid}";
+                    string encryptedUserId = HttpUtility.UrlEncode(businessLogic.Encrypt(txtUserId.Text));
+                    string encryptedGuid = HttpUtility.UrlEncode(businessLogic.Encrypt(guid));
+
+                    string redirectUrl = $"WelcomePage.aspx?userId={encryptedUserId}&guid={encryptedGuid}";
                     
                     isActive = 1;
                     businessLogic.StoreLoginInfo(userId, guid, Request.UrlReferrer?.ToString(), DateTime.Now, isActive);
@@ -61,5 +68,6 @@ namespace demoWebFormTaskMukeshShelar
             Response.Redirect("RegistrationForm.aspx", false);
             //Context.ApplicationInstance.CompleteRequest();
         }
+
     }
 }

@@ -15,6 +15,15 @@ namespace demoWebFormTaskMukeshShelar
     {
 
         /// <summary>
+        /// btnLoginRedirect control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnLoginRedirect;
+
+        /// <summary>
         /// lblUserIdInModalHeader control.
         /// </summary>
         /// <remarks>
@@ -67,5 +76,14 @@ namespace demoWebFormTaskMukeshShelar
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnConvert;
+
+        /// <summary>
+        /// delConfirm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label delConfirm;
     }
 }

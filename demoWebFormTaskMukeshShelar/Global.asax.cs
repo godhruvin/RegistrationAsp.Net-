@@ -38,10 +38,10 @@ namespace demoWebFormTaskMukeshShelar
 
         protected void Session_End(object sender, EventArgs e)
         {
-            if(HttpContext.Current != null)
+            if (HttpContext.Current != null)
             {
-            HttpContext.Current.Response.Redirect("~/LoginSignUp.aspx", false);
-            Context.ApplicationInstance.CompleteRequest();
+                HttpContext.Current.Response.Redirect("~/LoginSignUp.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
         }
 

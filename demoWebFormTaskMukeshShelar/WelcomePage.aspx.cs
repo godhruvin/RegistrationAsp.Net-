@@ -1,9 +1,14 @@
-﻿using Aspose.Pdf.Devices;
+﻿using Aspose.Pdf;
+using Aspose.Pdf.Devices;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using demoWebFormTaskMukeshShelar.BLL;
 using System;
+using System.Configuration;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
+using System.Web;
 using System.Web.ModelBinding;
 using static demoWebFormTaskMukeshShelar.DLL.UserDataAccess;
 
@@ -11,9 +16,11 @@ namespace demoWebFormTaskMukeshShelar
 {
     public partial class WelcomePage : System.Web.UI.Page
     {
+        UserBusinessLogic businessLogic = new UserBusinessLogic();
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            checkuserisActiveFieldStatusForSessionExpiry(sender, e);
+            //checkuserisActiveFieldStatusForSessionExpiry(sender, e);
 
             if (!IsPostBack)
             {
@@ -22,15 +29,13 @@ namespace demoWebFormTaskMukeshShelar
 
             string userId = Session["userId"]?.ToString();
             string userGuid = Session["userguid"]?.ToString();
-            
+
             //checking userid and userguid is not null
 
-            string guiduser = Request.QueryString["guid"]?.ToString();
-
-            if (Response.IsRequestBeingRedirected)
-            {
-                return;
-            }
+            //string guiduser = Request.QueryString["guid"]?.ToString();
+            string guid = Request.QueryString["guid"]?.ToString();
+           
+            string guiduser = HttpUtility.UrlDecode(businessLogic.Decrypt(guid));
 
             //if the guid and guid of user stores in session does not match 
             if (!string.IsNullOrEmpty(guiduser) && guiduser != userGuid)
@@ -66,7 +71,7 @@ namespace demoWebFormTaskMukeshShelar
 
                         if (!string.IsNullOrEmpty(userId))
                         {
-                            UserBusinessLogic businessLogic = new UserBusinessLogic();
+
                             int result = businessLogic.insertDocument(userId, fileName);
                             if (result > 0)
                             {
@@ -129,12 +134,13 @@ namespace demoWebFormTaskMukeshShelar
                     else if (fileExtension == ".docx" || fileExtension == ".doc")
                     {
                         Aspose.Words.Document wordDocument = new Aspose.Words.Document(tempFilePath);
-                        ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff)
+                        ImageSaveOptions options = new ImageSaveOptions(Aspose.Words.SaveFormat.Tiff)
                         {
                             TiffCompression = TiffCompression.Lzw,
                             Resolution = 300
                         };
                         wordDocument.Save(tifFilePath, options);
+
                     }
                     else
                     {
@@ -146,7 +152,7 @@ namespace demoWebFormTaskMukeshShelar
                     string userId = Session["userId"]?.ToString();
                     if (!string.IsNullOrEmpty(userId))
                     {
-                        UserBusinessLogic businessLogic = new UserBusinessLogic();
+
                         int result = businessLogic.insertTifDocument(userId, fileName);
 
                         if (result > 0)
@@ -177,7 +183,10 @@ namespace demoWebFormTaskMukeshShelar
             {
                 string userId = Session["userId"]?.ToString();
                 string guid = Session["userguid"]?.ToString();
-                string redirectUrl = $"UsersList.aspx?userId={userId}&guid={guid}";
+                string guidEncrypted = Request.QueryString["guid"]?.ToString();
+                string encrypteduserId = Request.QueryString["userId"]?.ToString();
+
+                string redirectUrl = $"UsersList.aspx?userId={encrypteduserId}&guid={guidEncrypted}";
                 Response.Redirect(redirectUrl, false);
                 Context.ApplicationInstance.CompleteRequest();
             }
@@ -207,22 +216,18 @@ namespace demoWebFormTaskMukeshShelar
             try
             {
                 string userId = Session["userId"]?.ToString();
-                string guiduser = Request.QueryString["guid"]?.ToString();
+                string guid = Request.QueryString["guid"]?.ToString();
+                string guiduser = HttpUtility.UrlDecode(businessLogic.Decrypt(guid));
 
-                bool isNewUser = Session["isNewUser"] != null && (bool)Session["isNewUser"];
+                // Validate the session using the GUID
 
-                if (!isNewUser)
+                int isActiveStatus = businessLogic.IsSessionValid(guiduser);
+
+                if (isActiveStatus == 0)
                 {
-                    // Validate the session using the GUID
-                    UserBusinessLogic businessLogic = new UserBusinessLogic();
-                    int isActiveStatus = businessLogic.IsSessionValid(guiduser);
-
-                    if (isActiveStatus == 0)
-                    {
-                        // If the GUID is inactive, redirect this tab to login
-                        redirectToLogin();
-                        return;
-                    }
+                    // If the GUID is inactive, redirect this tab to login
+                    redirectToLogin();
+                    return;
                 }
             }
             catch (Exception ex)
@@ -239,5 +244,34 @@ namespace demoWebFormTaskMukeshShelar
             return;
         }
 
+        //redirect to userList Page.
+        protected void redirectToActiveUsersList(object sender, EventArgs e)
+        {
+            try
+            {
+                string userId = Session["userId"]?.ToString();
+                string guid = Session["userguid"]?.ToString();
+                string guidEncrypted = Request.QueryString["guid"]?.ToString();
+                string encrypteduserId = Request.QueryString["userId"]?.ToString();
+               
+                string redirectUrl = $"ActiveUsersList.aspx?userId={encrypteduserId}&guid={guidEncrypted}";
+                Response.Redirect(redirectUrl, false);
+                Context.ApplicationInstance.CompleteRequest();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error Occurred : " + ex.Message);
+            }
+        }
+
+        //redirect to login page.
+        protected void logOUt(object sender , EventArgs e)
+        {   
+            string userId = Session["userId"]?.ToString();
+            businessLogic.updateIsActiveStatus(userId);
+            string redirectUrl = $"LoginSignUp.aspx";
+            Response.Redirect(redirectUrl, false);
+            Context.ApplicationInstance.CompleteRequest();
+        }
     }
 }

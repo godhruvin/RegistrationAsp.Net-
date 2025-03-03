@@ -13,11 +13,11 @@
             font-family: 'Arial', sans-serif;
         }
 
-            .gridview-table th, .gridview-table td {
-                padding: 15px;
-                text-align: left;
-                border: 1px solid #ddd;
-            }
+       .gridview-table th, .gridview-table td {
+           padding: 15px;
+           text-align: left;
+           border: 1px solid #ddd;
+       }
 
             .gridview-table th {
                 background-color: #4CAF50;
@@ -43,9 +43,9 @@
                 font-weight: bold;
             }
 
-                .gridview-table a:hover {
-                    text-decoration: underline;
-                }
+            .gridview-table a:hover {
+                text-decoration: underline;
+            }
 
         .gridview-button {
             background-color: #4CAF50;
@@ -85,13 +85,12 @@
                 <asp:TemplateField HeaderText="UserId">
                     <ItemTemplate>
                         <asp:LinkButton ID="hlUserId" runat="server"
-                            Text='<%# Eval("userId") %>' 
+                            Text='<%# Eval("userId") %>'
                             OnClick="lnkUserId_Click" />
                     </ItemTemplate>
                 </asp:TemplateField>
             </Columns>
         </asp:GridView>
-
     </form>
 </body>
 </html>

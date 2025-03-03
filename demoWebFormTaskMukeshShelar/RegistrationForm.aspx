@@ -6,7 +6,6 @@
     <title>Registration Form</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
     <style>
-
         body {
             font-family: "Ubuntu Mono";
             background-color: #f4f4f4;
@@ -42,70 +41,69 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 1200px;
-            height: 780px;
+            height: auto;
         }
 
-            .form-container h2 {
-                text-align: center;
-                margin-bottom: 15px;
-                color: #333333;
-                letter-spacing: 3px;
-            }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #333333;
+            letter-spacing: 3px;
+        }
 
-            .form-container label {
-                font-size: 14px;
-                font-weight: bold;
-                color: #555555;
-                margin-bottom: 5px;
-            }
+       .form-container label {
+           font-size: 14px;
+           font-weight: bold;
+           color: #555555;
+           margin-bottom: 5px;
+       }
 
-            .form-container input[type="text"],
-            .form-container input[type="email"],
-            .form-container input[type="password"],
-            .form-container input[type="date"],
-            .form-container textarea {
-                width: 100%;
-                padding: 8px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-                font-size: 14px;
-                box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-                /*                margin-top:20px;*/
-            }
+       .form-container input[type="text"],
+       .form-container input[type="email"],
+       .form-container input[type="password"],
+       .form-container input[type="date"],
+       .form-container textarea {
+           width: 100%;
+           padding: 8px;
+           border: 1px solid #ddd;
+           border-radius: 5px;
+           font-size: 14px;
+           box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+       }
 
-                .form-container input:focus,
-                .form-container textarea:focus {
-                    outline: none;
-                    border-color: #007bff;
-                    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-                }
+       .form-container input:focus,
+       .form-container textarea:focus {
+           outline: none;
+           border-color: #007bff;
+           box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+       }
 
-            .form-container .radio-group {
-                display: flex;
-                justify-content: flex-start;
-                margin-bottom: 10px;
-            }
+        .form-container .radio-group {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 10px;
+        }
 
-            .form-container textarea {
-                resize: none;
-                margin-top: 10px;
-            }
+        .form-container textarea {
+           resize: none;
+           margin-top: 10px;
+        }
 
-            .form-container button {
-                padding: 10px;
-                font-size: 16px;
-                font-weight: bold;
-                color: #ffffff;
-                background-color: #007bff;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                transition: background-color 0.3s ease;
-            }
+         .form-container button {
+           padding: 10px;
+           font-size: 16px;
+           font-weight: bold;
+           color: #ffffff;
+           background-color: #007bff;
+           border: none;
+           border-radius: 5px;
+           cursor: pointer;
+           transition: background-color 0.3s ease;
+         }
 
-                .form-container button:hover {
-                    background-color: #0056b3;
-                }
+         .form-container button:hover {
+             background-color: #0056b3;
+         }
 
         .btn {
             margin-top: 13px;
@@ -121,15 +119,13 @@
             margin-right: 20px;
         }
 
-            .gender-radio label:last-child {
-                margin-right: 5px;
-            }
+        .gender-radio label:last-child {
+           margin-right: 5px;
+        }
     </style>
 
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", function () {
-
-
             document.getElementById('<%= DateOfBirth.ClientID %>').addEventListener('change', function () {
                 var selectedDate = this.value;
 
@@ -142,7 +138,6 @@
                     if (m < dob.getMonth() || (m === dob.getMonth() && d < dob.getDate())) {
                         age--;
                     }
-
                     document.getElementById('<%= Age.ClientID %>').value = age;
                 }
             });
@@ -169,7 +164,6 @@
             &nbsp;<asp:TextBox ID="uid" runat="server" CssClass="form-control" placeholder="Enter your User ID"></asp:TextBox>
 
             <div class="form-row">
-
                 <div class="form-group">
                     <asp:Label ID="lblFirstName" runat="server" Text="First Name" CssClass="form-label"></asp:Label>
                     &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="FirstName" Display="Dynamic" ErrorMessage="FirstName is Required" ForeColor="Red"></asp:RequiredFieldValidator>
@@ -181,7 +175,6 @@
                     <asp:TextBox ID="LastName" runat="server" CssClass="form-control" placeholder="Enter your Last Name"></asp:TextBox>
                 </div>
             </div>
-
 
             <div class="form-row">
                 <div class="form-group">
@@ -206,6 +199,7 @@
                     &nbsp;
                     &nbsp;<asp:TextBox ID="MobileNumber" runat="server" CssClass="form-control" placeholder="Enter your Mobile Number"></asp:TextBox>
                 </div>
+
                 <div class="form-group">
                     <asp:Label ID="lblEmail" runat="server" Text="Email" CssClass="form-label"></asp:Label>
                     &nbsp;&nbsp;
@@ -248,6 +242,7 @@
             &nbsp;
             <asp:RequiredFieldValidator ID="RequiredFieldValidator10" runat="server" Display="Dynamic" ErrorMessage="Remarks is Required" ForeColor="Red" ControlToValidate="Remarks"></asp:RequiredFieldValidator>
             <asp:TextBox ID="Remarks" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="4" Placeholder="Any additional remarks"></asp:TextBox>
+
             <div class="form-row">
                 <div class="form-group">
                     <asp:Label ID="lblPassword" runat="server" Text="Password" CssClass="form-label"></asp:Label>
@@ -266,6 +261,18 @@
                 </div>
             </div>
 
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="ddlStates" runat="server">State</label>
+                    <asp:DropDownList ID="ddlStates" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlStates_SelectedIndexChanged">
+                    </asp:DropDownList>
+                </div>
+                <div class="form-group">
+                    <asp:Label for="ddlCities" runat="server">City</asp:Label>
+                    <asp:DropDownList ID="ddlCities" runat="server" CssClass="form-control" AutoPostBack="true">
+                    </asp:DropDownList>
+                </div>
+            </div>
             <asp:Button ID="save" runat="server" Text="Save" CssClass="btn btn-success" OnClick="btnSave_DataInsert" />
         </div>
     </form>

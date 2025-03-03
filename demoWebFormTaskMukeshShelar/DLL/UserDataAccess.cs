@@ -1,17 +1,26 @@
-﻿using Aspose.Pdf.Operators;
-using Microsoft.SqlServer.Server;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace demoWebFormTaskMukeshShelar.DLL
 {
+
+      /// <summary>
+    /// Defines the <see cref="UserDataAccess" />
+    /// </summary>
+  
     public class UserDataAccess
+
     {
+        /// <summary>
+        /// The CheckUserValidity
+        /// </summary>
+        /// <param name="userId">The userId<see cref="string"/></param>
+        /// <param name="password">The password<see cref="string"/></param>
+        /// <returns>The <see cref="int"/></returns>
+      
         public int CheckUserValidity(string userId, string password)
         {
             try
@@ -39,9 +48,26 @@ namespace demoWebFormTaskMukeshShelar.DLL
                 throw new Exception("Error In data layer Occured : " + ex.Message);
             }
         }
-       
-        public string UserDataInsert(string userId, string firstName, string lastName, string mobileNumber, string email, string gender,
-                                     string maritalStatus, string remarks, DateTime dob, int age, string password)
+
+        /// <summary>
+        /// The UserDataInsert
+        /// </summary>
+        /// <param name="userId">The userId<see cref="string"/></param>
+        /// <param name="firstName">The firstName<see cref="string"/></param>
+        /// <param name="lastName">The lastName<see cref="string"/></param>
+        /// <param name="mobileNumber">The mobileNumber<see cref="string"/></param>
+        /// <param name="email">The email<see cref="string"/></param>
+        /// <param name="gender">The gender<see cref="string"/></param>
+        /// <param name="maritalStatus">The maritalStatus<see cref="string"/></param>
+        /// <param name="remarks">The remarks<see cref="string"/></param>
+        /// <param name="dob">The dob<see cref="DateTime"/></param>
+        /// <param name="age">The age<see cref="int"/></param>
+        /// <param name="state">The state<see cref="string"/></param>
+        /// <param name="city">The city<see cref="string"/></param>
+        /// <param name="password">The password<see cref="string"/></param>
+        /// <returns>The <see cref="string"/></returns>
+      
+        public string UserDataInsert(string userId, string firstName, string lastName, string mobileNumber, string email, string gender, string maritalStatus, string remarks, DateTime dob, int age, string state, string city, string password)
         {
             try
             {
@@ -62,6 +88,8 @@ namespace demoWebFormTaskMukeshShelar.DLL
                         new SqlParameter("@Remarks", SqlDbType.NVarChar) { Value = remarks},
                         new SqlParameter("@DOB", SqlDbType.Date) { Value = dob },
                         new SqlParameter("@Age", SqlDbType.Int) { Value = age},
+                        new SqlParameter("@state", SqlDbType.Int) { Value = state},
+                        new SqlParameter("@city", SqlDbType.Int) { Value = city},
                         new SqlParameter("@Password", SqlDbType.NVarChar) { Value = password}
                     };
                     SqlHelper.AttachParameters(command, parameters);
@@ -78,6 +106,11 @@ namespace demoWebFormTaskMukeshShelar.DLL
                 throw new Exception("Error In data layer Occured : " + ex.Message);
             }
         }
+
+        /// <summary>
+        /// The FetchAllUsers
+        /// </summary>
+        /// <returns>The <see cref="DataTable"/></returns>
        
         public DataTable FetchAllUsers()
         {
@@ -99,7 +132,14 @@ namespace demoWebFormTaskMukeshShelar.DLL
                 throw new Exception("Error In data layer Occured : " + ex.Message);
             }
         }
-        
+
+        /// <summary>
+        /// The insertDocument
+        /// </summary>
+        /// <param name="userId">The userId<see cref="string"/></param>
+        /// <param name="document">The document<see cref="string"/></param>
+        /// <returns>The <see cref="int"/></returns>
+       
         public int insertDocument(string userId, string document)
         {
             try
@@ -127,8 +167,14 @@ namespace demoWebFormTaskMukeshShelar.DLL
             {
                 throw new Exception("Error In data layer Occured : " + ex.Message);
             }
-
         }
+
+        /// <summary>
+        /// The insertTifDocument
+        /// </summary>
+        /// <param name="userId">The userId<see cref="string"/></param>
+        /// <param name="tifdocumentname">The tifdocumentname<see cref="string"/></param>
+        /// <returns>The <see cref="int"/></returns>
        
         public int insertTifDocument(string userId, string tifdocumentname)
         {
@@ -158,7 +204,17 @@ namespace demoWebFormTaskMukeshShelar.DLL
                 throw new Exception("Error In data layer Occured : " + ex.Message);
             }
         }
-        
+
+        /// <summary>
+        /// The StoreUserLoginInfo
+        /// </summary>
+        /// <param name="userId">The userId<see cref="string"/></param>
+        /// <param name="Guid">The Guid<see cref="string"/></param>
+        /// <param name="SourcePage">The SourcePage<see cref="string"/></param>
+        /// <param name="CreatedOn">The CreatedOn<see cref="DateTime"/></param>
+        /// <param name="isActive">The isActive<see cref="int"/></param>
+        /// <returns>The <see cref="int"/></returns>
+       
         public int StoreUserLoginInfo(string userId, string Guid, string SourcePage, DateTime CreatedOn, int isActive)
         {
             try
@@ -189,7 +245,13 @@ namespace demoWebFormTaskMukeshShelar.DLL
                 throw new Exception("Error In data layer Occured : " + ex.Message);
             }
         }
-        
+
+        /// <summary>
+        /// The fetchUserBasedOnUserId
+        /// </summary>
+        /// <param name="userId">The userId<see cref="string"/></param>
+        /// <returns>The <see cref="DataSet"/></returns>
+       
         public DataSet fetchUserBasedOnUserId(string userId)
         {
             try
@@ -197,7 +259,7 @@ namespace demoWebFormTaskMukeshShelar.DLL
                 using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["webformregistrationtable"].ConnectionString))
                 {
                     conn.Open();
-                    string queryToFetchUserDetails = "select FirstName , LastName , DOB , Email  , MobileNumber, MaritalStatus ,Gender, Age , Remarks from registrationtable where userId = @userId";
+                    string queryToFetchUserDetails = "select FirstName , LastName , DOB , Email  , MobileNumber, MaritalStatus ,Gender, Age ,state ,city, Remarks from registrationtable where userId = @userId";
                     var cmd = SqlHelper.CreateCommand(conn, queryToFetchUserDetails);
                     var parameters = new List<SqlParameter>
                     {
@@ -216,8 +278,25 @@ namespace demoWebFormTaskMukeshShelar.DLL
             }
         }
 
-        public string updateUserData(string userId, string FirstName, string LastName, string mobileNumber, string email, string gender,
-                                    string maritalStatus, string remarks, DateTime dob, int age)
+        /// <summary>
+        /// The updateUserData
+        /// </summary>
+        /// <param name="userId">The userId<see cref="string"/></param>
+        /// <param name="newUserId">The newUserId<see cref="string"/></param>
+        /// <param name="FirstName">The FirstName<see cref="string"/></param>
+        /// <param name="LastName">The LastName<see cref="string"/></param>
+        /// <param name="mobileNumber">The mobileNumber<see cref="string"/></param>
+        /// <param name="email">The email<see cref="string"/></param>
+        /// <param name="gender">The gender<see cref="string"/></param>
+        /// <param name="maritalStatus">The maritalStatus<see cref="string"/></param>
+        /// <param name="remarks">The remarks<see cref="string"/></param>
+        /// <param name="dob">The dob<see cref="DateTime"/></param>
+        /// <param name="state">The state<see cref="string"/></param>
+        /// <param name="city">The city<see cref="string"/></param>
+        /// <param name="age">The age<see cref="int"/></param>
+        /// <returns>The <see cref="string"/></returns>
+        
+        public string updateUserData(string userId, string newUserId, string FirstName, string LastName, string mobileNumber, string email, string gender, string maritalStatus, string remarks, DateTime dob, string state, string city, int age)
         {
             try
             {
@@ -228,6 +307,7 @@ namespace demoWebFormTaskMukeshShelar.DLL
                     var parameters = new List<SqlParameter>
                     {
                         new SqlParameter("@userId", SqlDbType.NVarChar) { Value = userId },
+                        new SqlParameter("@NewUserId", SqlDbType.NVarChar) { Value = newUserId },
                         new SqlParameter("@FirstName", SqlDbType.NVarChar) { Value = FirstName },
                         new SqlParameter("@LastName", SqlDbType.NVarChar) { Value = LastName },
                         new SqlParameter("@MobileNumber", SqlDbType.NVarChar) { Value = mobileNumber },
@@ -236,6 +316,8 @@ namespace demoWebFormTaskMukeshShelar.DLL
                         new SqlParameter("@MaritalStatus", SqlDbType.NVarChar) { Value = maritalStatus},
                         new SqlParameter("@Remarks", SqlDbType.NVarChar) { Value = remarks},
                         new SqlParameter("@DOB", SqlDbType.Date) { Value = dob },
+                        new SqlParameter("@state", SqlDbType.NVarChar) { Value = state },
+                        new SqlParameter("@city", SqlDbType.NVarChar) { Value = city },
                         new SqlParameter("@Age", SqlDbType.Int) { Value = age}
                     };
                     SqlHelper.AttachParameters(command, parameters);
@@ -251,9 +333,15 @@ namespace demoWebFormTaskMukeshShelar.DLL
             {
                 throw new Exception("Error In data layer Occured : " + ex.Message);
             }
-
         }
 
+        /// <summary>
+        /// The forgotPasswordCheckUserCriteria
+        /// </summary>
+        /// <param name="mobileNumber">The mobileNumber<see cref="string"/></param>
+        /// <param name="email">The email<see cref="string"/></param>
+        /// <returns>The <see cref="string"/></returns>
+        
         public string forgotPasswordCheckUserCriteria(string mobileNumber, string email)
         {
             try
@@ -283,6 +371,13 @@ namespace demoWebFormTaskMukeshShelar.DLL
                 throw new Exception("Error in data layer occurred: " + ex.Message);
             }
         }
+
+        /// <summary>
+        /// The UpdatePassword
+        /// </summary>
+        /// <param name="email">The email<see cref="string"/></param>
+        /// <param name="newPassword">The newPassword<see cref="string"/></param>
+        /// <returns>The <see cref="bool"/></returns>
         
         public bool UpdatePassword(string email, string newPassword)
         {
@@ -313,7 +408,13 @@ namespace demoWebFormTaskMukeshShelar.DLL
             }
         }
 
-        public int checkisActiveStatus(string guid)
+        /// <summary>
+        /// The CheckIsActiveStatus
+        /// </summary>
+        /// <param name="guid">The guid<see cref="string"/></param>
+        /// <returns>The <see cref="int"/></returns>
+     
+        public int CheckIsActiveStatus(string guid)
         {
             try
             {
@@ -321,20 +422,28 @@ namespace demoWebFormTaskMukeshShelar.DLL
                 {
                     conn.Open();
 
-                    string query =
-                        @"SELECT isActive FROM LoginInfo WHERE GUID = @GUID;";
+                    // Update query to include both GUID and TabGuid
+                    string query = @"
+                SELECT isActive 
+                FROM LoginInfo 
+                WHERE GUID = @GUID";
+
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@Guid", guid);
+                        // Add parameters for both GUID and TabGuid
+                        cmd.Parameters.AddWithValue("@GUID", guid);
 
+                        // Execute the query
                         object result = cmd.ExecuteScalar();
 
-                        if (result != DBNull.Value)
+                        // Check if a result was returned and parse it
+                        if (result != DBNull.Value && result != null)
                         {
                             return Convert.ToInt32(result);
                         }
                         else
                         {
+                            // If no matching record, return 0 (inactive)
                             return 0;
                         }
                     }
@@ -342,9 +451,119 @@ namespace demoWebFormTaskMukeshShelar.DLL
             }
             catch (Exception ex)
             {
-                throw new Exception("Error occurred in Dll Occured : " + ex.Message);
+                // Handle any errors
+                throw new Exception("Error occurred in CheckIsActiveStatus: " + ex.Message);
             }
         }
 
+        /// <summary>
+        /// The fetchActiveUsers
+        /// </summary>
+        /// <returns>The <see cref="DataTable"/></returns>
+      
+        public DataTable fetchActiveUsers()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["webformregistrationtable"].ConnectionString))
+                {
+                    conn.Open();
+                    DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.StoredProcedure, "fetchActiveUsersDetails");
+                    return ds.Tables[0];
+                }
+            }
+            catch (SqlException sqlex)
+            {
+                throw new Exception("Sql Error Occured : " + sqlex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error In data layer Occured : " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// The GetStates
+        /// </summary>
+        /// <returns>The <see cref="DataTable"/></returns>
+       
+        public DataTable GetStates()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["StoreCityState"].ConnectionString))
+                {
+                    conn.Open();
+                    DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.StoredProcedure, "fetchState");
+                    return ds.Tables[0];
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error fetching states: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// The GetCitiesByState
+        /// </summary>
+        /// <param name="stateId">The stateId<see cref="int"/></param>
+        /// <returns>The <see cref="DataTable"/></returns>
+     
+        public DataTable GetCitiesByState(int stateId)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["StoreCityState"].ConnectionString))
+                {
+                    conn.Open();
+                    SqlParameter[] parameters = new SqlParameter[]
+                    {
+                new SqlParameter("@StateID", stateId)
+                    };
+                    DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.StoredProcedure, "fetchCity", parameters);
+                    return ds.Tables[0];
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error fetching cities: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// The updateIsactiveStatus
+        /// </summary>
+        /// <param name="userId">The userId<see cref="string"/></param>
+        /// <returns>The <see cref="bool"/></returns>
+        
+        public bool updateIsactiveStatus(string userId)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["webformregistrationtable"].ConnectionString))
+                {
+                    conn.Open();
+
+                    string query = "UPDATE LoginInfo SET isActive = 0 WHERE userId = @userId";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@userId", userId);
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (SqlException sqlex)
+            {
+                throw new Exception("SQL Error occurred: " + sqlex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in data layer occurred: " + ex.Message);
+            }
+        }
     }
 }

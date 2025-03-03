@@ -3,9 +3,10 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
- <head runat="server">
+<head runat="server">
     <title></title>
-        <style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+    <style>
         body {
             background-color: #f4f4f4;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -97,9 +98,40 @@
             .forgot-password-link:hover {
                 color: #0056b3;
             }
+        /* Parent container for password field and icons */
+        .password-container {
+            position: relative;
+            width: 100%; /* Ensure it matches your input field width */
+        }
+
+        #txtPassword {
+            width: 100%; /* Full width for the password field */
+            padding-right: 40px; /* Space for the icons on the right */
+        }
+
+        .eyeiconopen{
+            display:none;
+            color:black;
+        }
+        .eyeiconopen,
+        .eyeiconclose {
+            position: absolute;
+            top: 35%;
+            right: -11px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 16px; 
+        }
+
+        /* Hide the close icon by default */
+        .eyeiconclose {
+            display: block;
+            color:black;
+        }
+
     </style>
 
-     <script type="text/javascript">
+    <script type="text/javascript">
         function toggleValidation(enable) {
             var validator1 = document.getElementById("<%= RequiredFieldValidator1.ClientID %>");
             var validator2 = document.getElementById("<%= RequiredFieldValidator2.ClientID %>");
@@ -118,31 +150,61 @@
             toggleValidation(false);
         }
 
+        // Method to toggle the functionality for the password visibility.
+        function togglePasswordVisibility() {
+            
+            var eyeopen = document.querySelector(".eyeiconopen");
+            var eyeclose = document.querySelector(".eyeiconclose");
+            var txtPasswd = document.getElementById("<%= txtPassword.ClientID %>");
 
+            if (getComputedStyle(eyeopen).display == 'block') {
+                eyeopen.style.display = 'none';
+                eyeclose.style.display = 'block';
+
+            } else {
+                eyeopen.style.display = 'block';
+                eyeclose.style.display = 'none';
+            }
+
+            if (txtPasswd.type == 'password') {
+                txtPasswd.type = "text";
+                eyeopen.style.display = 'block';
+                eyeclose.style.display = 'none';
+            } else {
+                txtPasswd.type = "password";
+                eyeopen.style.display = 'none';
+                eyeclose.style.display = 'block';
+            }
+        }
     </script>
 </head>
 <body>
-     <form id="form1" runat="server">
+
+    <form id="form1" runat="server">
         <div class="form-container">
             <!-- User ID -->
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtUserId" Display="Dynamic" ErrorMessage="UserId is Required" ForeColor="Red"></asp:RequiredFieldValidator>
+         
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtUserId" Display="Dynamic" ErrorMessage="UserId is Required" ForeColor="Red" Font-Size="x-small"></asp:RequiredFieldValidator>
             <asp:Label ID="lblUserId" runat="server" Text="User ID" CssClass="form-label"></asp:Label>
-            <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtUserId" Display="Dynamic" ErrorMessage="User ID must be between 4 and 10 characters long." ForeColor="Red" ValidationExpression="^.{4,10}$"></asp:RegularExpressionValidator>
+            <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtUserId" Display="Dynamic" ErrorMessage="User ID must be between 4 and 10 characters long." ForeColor="Red" ValidationExpression="^.{4,10}$" Font-Size="x-small"></asp:RegularExpressionValidator>
             <asp:TextBox ID="txtUserId" runat="server" CssClass="form-input" placeholder="Enter your UserId"></asp:TextBox>
 
             <!-- Password -->
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtPassword" Display="Dynamic" ErrorMessage="Password is Required" ForeColor="Red" Font-Size="x-small"></asp:RequiredFieldValidator>
             <asp:Label ID="lblPassword" runat="server" Text="Password" CssClass="form-label"></asp:Label>
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtPassword" Display="Dynamic" ErrorMessage="Password is Required" ForeColor="Red"></asp:RequiredFieldValidator>
-            <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txtPassword" Display="Dynamic" ErrorMessage="Password must be at least 5 characters long." ForeColor="Red" ValidationExpression="^.{5,}$"></asp:RegularExpressionValidator>
-            <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-input" placeholder="Enter your password"></asp:TextBox>
-
+            <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txtPassword" Display="Dynamic" ErrorMessage="Password must be at least 5 characters long." ForeColor="Red" ValidationExpression="^.{5,}$" Font-Size="x-small"></asp:RegularExpressionValidator>
+            
+            <div class="password-container">
+                <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-input form-control" placeholder="Enter your password"></asp:TextBox>
+                <i class="eyeiconopen bi bi-eye" onclick="togglePasswordVisibility()"></i>
+                <i class="eyeiconclose bi bi-eye-slash" onclick="togglePasswordVisibility()"></i>
+            </div>
             <!-- Login Button -->
             <asp:Button ID="btnLogin" runat="server" Text="Login" OnClick="btnLogin_ServerClick" CssClass="form-btn" />
 
 
             <asp:HyperLink ID="lnkForgotPassword" runat="server" NavigateUrl="ForgotPassword.aspx" CssClass="forgot-password-link">
                 Forgot Password?
-            
             </asp:HyperLink>
 
             <!-- Sign-In Button (hidden initially) -->

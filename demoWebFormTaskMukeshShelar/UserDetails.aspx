@@ -4,20 +4,20 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 
- <head runat="server">
+<head runat="server">
     <title></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+
     <style>
         body {
-            font-family: "Ubuntu Mono";
+            font-family: "Courier New, Courier, monospace";
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100%;
-            position:relative;
+            position: relative;
         }
 
         .form-row {
@@ -39,12 +39,12 @@
 
         .form-container {
             background: #ffffff;
-            margin-top: 20px;
-            padding: 17px 25px;
-            border-radius: 8px;
+            /* margin-top: 20px; */
+            padding: 12px 18px;
+            border-radius: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 1200px;
-            height: 680px;
+            height: auto;
         }
 
             .form-container h2 {
@@ -104,9 +104,9 @@
                 transition: background-color 0.3s ease;
             }
 
-                .form-container button:hover {
-                    background-color: #0056b3;
-                }
+            .form-container button:hover {
+               background-color: #0056b3;
+            }
 
         .btn {
             margin-top: 13px;
@@ -125,19 +125,43 @@
             .gender-radio label:last-child {
                 margin-right: 5px;
             }
-            .update-section{
-               position:absolute;
-               display:flex;
-               gap:7px;
-               font-size:x-large;
-            }
-            .update-section #updatelbl{
-                color:red;
+
+        .update-section {
+            position: absolute;
+            display: flex;
+            gap: 7px;
+            font-size: x-large;
+        }
+
+            .update-section #updatelbl {
+                color: red;
             }
     </style>
-     <script>
-         
-     </script>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+
+            document.getElementById('<%= DateOfBirth.ClientID %>').addEventListener('change', function () {
+                 var selectedDate = this.value;
+
+                 if (selectedDate) {
+                     var dob = new Date(selectedDate);
+                     var today = new Date(); // Get the current date
+                     var age = today.getFullYear() - dob.getFullYear();
+
+                     var m = today.getMonth(), d = today.getDate();
+                     if (m < dob.getMonth() || (m === dob.getMonth() && d < dob.getDate())) {
+                         age--;
+                     }
+
+                     document.getElementById('<%= Age.ClientID %>').value = age;
+             }
+         });
+         });
+    </script>
+
 </head>
 <body>
     <form id="form1" runat="server">
@@ -146,7 +170,7 @@
                 <asp:Label ID="updatelbl" runat="server">Update</asp:Label>
                 <asp:CheckBox ID="Update" runat="server" OnCheckedChanged="Checkedbtnchange" AutoPostBack="true" />
             </div>
-                 <h2> &nbsp;User Details</h2>
+            <h2>&nbsp;User Details</h2>
             <asp:Label ID="lblUserId" runat="server" Text="User ID" CssClass="form-label"></asp:Label>
             &nbsp;&nbsp;
            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="uid" Display="Dynamic" ErrorMessage="UserId is Required" ForeColor="Red"></asp:RequiredFieldValidator>
@@ -230,11 +254,26 @@
                 </div>
             </div>
 
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="ddlStates" runat="server">State</label>
+                    <asp:DropDownList ID="ddlStates" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlStates_SelectedIndexChanged">
+                    </asp:DropDownList>
+                </div>
+                <div class="form-group">
+                    <asp:Label for="ddlCities" runat="server">City</asp:Label>
+                    <asp:DropDownList ID="ddlCities" runat="server" CssClass="form-control" AutoPostBack="true">
+                    </asp:DropDownList>
+
+                </div>
+            </div>
+
+
             <asp:Label ID="lblRemarks" runat="server" Text="Remarks" CssClass="form-label"></asp:Label>
             &nbsp;
            <asp:RequiredFieldValidator ID="RequiredFieldValidator10" runat="server" Display="Dynamic" ErrorMessage="Remarks is Required" ForeColor="Red" ControlToValidate="Remarks"></asp:RequiredFieldValidator>
             <asp:TextBox ID="Remarks" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="4" Placeholder="Any additional remarks"></asp:TextBox>
-            <asp:Button ID="save" runat="server" Text="Save" CssClass="btn btn-success" OnClick="OnUpdateBtnClickSaveUserData"/>
+            <asp:Button ID="save" runat="server" Text="Save" CssClass="btn btn-success" OnClick="OnUpdateBtnClickSaveUserData" />
         </div>
     </form>
 </body>
